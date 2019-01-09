@@ -22,22 +22,48 @@ class MemoFormVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         
         self.present(picker, animated: false)
     }
+
     
+    
+    // 이미지 선택을 완료했을 때 호출되는 메소드
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        //self.preview.image = info as UIImage
+        // 선택된 이미지를 미리보기에 표시한다.
+        self.preview.image = info[.originalImage] as? UIImage
+        
+        // 이미지 피커 컨트롤러를 닫는다.
         picker.dismiss(animated: false)
     }
-    
+
     func textViewDidChange(_ textView: UITextView) {
         let contents = textView.text as NSString
-        let length = ( (contents.substring(with: NSRange(location: 0, length:length))))
+        let length = ( (contents.length > 15) ? 15 : contents.length )
+        self.subject = contents.substring(with:NSRange(location: 0, length: length))
         
-        testestsets
-        
+        self.navigationItem.title = subject
     }
+    
 
     @IBAction func save(_ sender: Any) {
+        guard self.contents.text?.isEmpty == false else{
+            let alert = UIAlertController(title: nil,
+                                          message: "내용을 입력해주세요",
+                                          preferredStyle: .alert)
+           return
+        }
+        
+        let data = MemoData()
+        
+        data.title = self.subject
+        data.contents = self.contents.text
+        data.image = self.preview.image
+        data.regdate = Date()
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        appDelegate.memolist.append(data)
+        
+        _ = self.navigationController?.popViewController(animated: true)
     }
+    
     
     
     override func viewDidLoad() {
