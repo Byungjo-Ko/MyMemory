@@ -32,7 +32,7 @@ class MemoFormVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         let contents = textView.text as NSString
         let length = ( (contents.substring(with: NSRange(location: 0, length:length))))
         
-        
+        testestsets
         
     }
 
