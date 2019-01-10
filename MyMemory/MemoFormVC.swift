@@ -48,6 +48,8 @@ class MemoFormVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
             let alert = UIAlertController(title: nil,
                                           message: "내용을 입력해주세요",
                                           preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            self.present(alert, animated: true);
            return
         }
         
@@ -56,12 +58,14 @@ class MemoFormVC: UIViewController, UIImagePickerControllerDelegate, UINavigatio
         data.title = self.subject
         data.contents = self.contents.text
         data.image = self.preview.image
-        data.regdate = Date()
+        data.regdate = Date() //시스템이 계산한 현재의 시각
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         appDelegate.memolist.append(data)
         
         _ = self.navigationController?.popViewController(animated: true)
+        
+        print("Done save")
     }
     
     
